@@ -54,24 +54,33 @@ function validateLogin() {
   }
 }
 
-// Crear cuenta bancaria con monto ingresado
-function createAccount() {
-  const user = JSON.parse(localStorage.getItem("fidexaUser"));
-  const accountKey = `account_${user.email}`;
-  if (localStorage.getItem(accountKey)) {
-    mostrarMensaje("accountMessage", "Account already exists.", "info");
-    return;
-  }
-  const input = prompt("Enter initial deposit amount:");
-  const amount = parseFloat(input);
-  if (isNaN(amount) || amount <= 0) {
-    mostrarMensaje("accountMessage", "Invalid amount. Please enter a positive number.", "error");
-    return;
-  }
-  const account = { balance: amount };
-  localStorage.setItem(accountKey, JSON.stringify(account));
-  mostrarMensaje("accountMessage", `Account created with $${amount.toFixed(2)}.`);
-  updateBalanceDisplay();
+// Modal de entrada de datos
+function mostrarInputModal(mensaje, callback) {
+  const modal = document.getElementById("inputModal");
+  const promptText = document.getElementById("modalPromptText");
+  const inputField = document.getElementById("modalInput");
+  const btnAccept = document.getElementById("modalAccept");
+  const btnCancel = document.getElementById("modalCancel");
+
+  promptText.textContent = mensaje;
+  inputField.value = "";
+  modal.style.display = "flex";
+
+  const cerrarModal = () => {
+    modal.style.display = "none";
+    btnAccept.onclick = null;
+    btnCancel.onclick = null;
+  };
+
+  btnAccept.onclick = () => {
+    cerrarModal();
+    callback(inputField.value.trim());
+  };
+
+  btnCancel.onclick = () => {
+    cerrarModal();
+    callback(null);
+  };
 }
 
 // Mostrar saldo actual
@@ -86,6 +95,28 @@ function updateBalanceDisplay() {
   }
 }
 
+// Crear cuenta bancaria con monto ingresado
+function createAccount() {
+  const user = JSON.parse(localStorage.getItem("fidexaUser"));
+  const accountKey = `account_${user.email}`;
+  if (localStorage.getItem(accountKey)) {
+    mostrarMensaje("accountMessage", "Account already exists.", "info");
+    return;
+  }
+
+  mostrarInputModal("Enter initial deposit amount:", function(input) {
+    const amount = parseFloat(input);
+    if (isNaN(amount) || amount <= 0) {
+      mostrarMensaje("accountMessage", "Invalid amount. Please enter a positive number.", "error");
+      return;
+    }
+    const account = { balance: amount };
+    localStorage.setItem(accountKey, JSON.stringify(account));
+    mostrarMensaje("accountMessage", `Account created with $${amount.toFixed(2)}.`);
+    updateBalanceDisplay();
+  });
+}
+
 // Simular depósito
 function deposit() {
   const user = JSON.parse(localStorage.getItem("fidexaUser"));
@@ -95,16 +126,18 @@ function deposit() {
     mostrarMensaje("accountMessage", "Please create an account first.", "error");
     return;
   }
-  const input = prompt("Enter deposit amount:");
-  const amount = parseFloat(input);
-  if (isNaN(amount) || amount <= 0) {
-    mostrarMensaje("accountMessage", "Invalid amount.", "error");
-    return;
-  }
-  account.balance += amount;
-  localStorage.setItem(accountKey, JSON.stringify(account));
-  mostrarMensaje("accountMessage", `Deposit of $${amount.toFixed(2)} successful.`);
-  updateBalanceDisplay();
+
+  mostrarInputModal("Enter deposit amount:", function(input) {
+    const amount = parseFloat(input);
+    if (isNaN(amount) || amount <= 0) {
+      mostrarMensaje("accountMessage", "Invalid amount.", "error");
+      return;
+    }
+    account.balance += amount;
+    localStorage.setItem(accountKey, JSON.stringify(account));
+    mostrarMensaje("accountMessage", `Deposit of $${amount.toFixed(2)} successful.`);
+    updateBalanceDisplay();
+  });
 }
 
 // Simular retiro
@@ -116,20 +149,22 @@ function withdraw() {
     mostrarMensaje("accountMessage", "Please create an account first.", "error");
     return;
   }
-  const input = prompt("Enter withdrawal amount:");
-  const amount = parseFloat(input);
-  if (isNaN(amount) || amount <= 0) {
-    mostrarMensaje("accountMessage", "Invalid amount.", "error");
-    return;
-  }
-  if (account.balance < amount) {
-    mostrarMensaje("accountMessage", "Insufficient funds for withdrawal.", "error");
-    return;
-  }
-  account.balance -= amount;
-  localStorage.setItem(accountKey, JSON.stringify(account));
-  mostrarMensaje("accountMessage", `Withdrawal of $${amount.toFixed(2)} successful.`);
-  updateBalanceDisplay();
+
+  mostrarInputModal("Enter withdrawal amount:", function(input) {
+    const amount = parseFloat(input);
+    if (isNaN(amount) || amount <= 0) {
+      mostrarMensaje("accountMessage", "Invalid amount.", "error");
+      return;
+    }
+    if (account.balance < amount) {
+      mostrarMensaje("accountMessage", "Insufficient funds for withdrawal.", "error");
+      return;
+    }
+    account.balance -= amount;
+    localStorage.setItem(accountKey, JSON.stringify(account));
+    mostrarMensaje("accountMessage", `Withdrawal of $${amount.toFixed(2)} successful.`);
+    updateBalanceDisplay();
+  });
 }
 
 // Simular transferencia
@@ -142,36 +177,93 @@ function transfer() {
     return;
   }
 
-  const email = prompt("Enter recipient's email:");
-  const amountInput = prompt("Enter transfer amount:");
-  const amount = parseFloat(amountInput);
+  mostrarInputModal("Enter recipient's email:", function(email) {
+    if (!email) {
+      mostrarMensaje("accountMessage", "Recipient email is required.", "error");
+      return;
+    }
 
-  if (!email || isNaN(amount) || amount <= 0) {
-    mostrarMensaje("accountMessage", "Invalid input.", "error");
-    return;
-  }
+    mostrarInputModal("Enter transfer amount:", function(amountInput) {
+      const amount = parseFloat(amountInput);
+      if (isNaN(amount) || amount <= 0) {
+        mostrarMensaje("accountMessage", "Invalid amount.", "error");
+        return;
+      }
 
-  const recipientKey = `account_${email}`;
-  const recipientAccount = JSON.parse(localStorage.getItem(recipientKey));
+      const recipientKey = `account_${email}`;
+      const recipientAccount = JSON.parse(localStorage.getItem(recipientKey));
 
-  if (!recipientAccount) {
-    mostrarMensaje("accountMessage", "Recipient account not found.", "error");
-    return;
-  }
+      if (!recipientAccount) {
+        mostrarMensaje("accountMessage", "Recipient account not found.", "error");
+        return;
+      }
 
-  if (account.balance < amount) {
-    mostrarMensaje("accountMessage", "Insufficient funds for transfer.", "error");
-    return;
-  }
+      if (account.balance < amount) {
+        mostrarMensaje("accountMessage", "Insufficient funds for transfer.", "error");
+        return;
+      }
 
-  account.balance -= amount;
-  recipientAccount.balance += amount;
+      account.balance -= amount;
+      recipientAccount.balance += amount;
 
-  localStorage.setItem(accountKey, JSON.stringify(account));
-  localStorage.setItem(recipientKey, JSON.stringify(recipientAccount));
+      localStorage.setItem(accountKey, JSON.stringify(account));
+      localStorage.setItem(recipientKey, JSON.stringify(recipientAccount));
 
-  mostrarMensaje("accountMessage", `Transfer of $${amount.toFixed(2)} to ${email} successful.`);
-  updateBalanceDisplay();
+      mostrarMensaje("accountMessage", `Transfer of $${amount.toFixed(2)} to ${email} successful.`);
+      updateBalanceDisplay();
+    });
+  });
+}
+
+// Actualizar perfil con modal
+function updateProfile() {
+  const user = JSON.parse(localStorage.getItem("fidexaUser"));
+  const userKey = "user_" + user.username;
+  const storedUser = JSON.parse(localStorage.getItem(userKey));
+
+  mostrarInputModal("Enter your new full name:", function(newName) {
+    if (!newName) {
+      mostrarMensaje("accountMessage", "Name is required.", "error");
+      return;
+    }
+
+    mostrarInputModal("Enter your new email:", function(newEmail) {
+      if (!newEmail) {
+        mostrarMensaje("accountMessage", "Email is required.", "error");
+        return;
+      }
+
+      mostrarInputModal("Enter your new password:", function(newPassword) {
+        if (!newPassword) {
+          mostrarMensaje("accountMessage", "Password is required.", "error");
+          return;
+        }
+
+        const updatedUser = {
+          username: storedUser.username,
+          name: newName,
+          email: newEmail,
+          password: newPassword
+        };
+
+        localStorage.setItem("user_" + storedUser.username, JSON.stringify(updatedUser));
+        localStorage.setItem("fidexaUser", JSON.stringify(updatedUser));
+
+        if (storedUser.email !== newEmail) {
+          const oldAccountKey = `account_${storedUser.email}`;
+          const newAccountKey = `account_${newEmail}`;
+          const accountData = JSON.parse(localStorage.getItem(oldAccountKey));
+          if (accountData) {
+            localStorage.setItem(newAccountKey, JSON.stringify(accountData));
+            localStorage.removeItem(oldAccountKey);
+          }
+        }
+
+        mostrarMensaje("accountMessage", "Profile updated successfully.");
+        location.reload();
+      });
+    });
+  });
 }
 
 // Eventos para formularios
@@ -201,4 +293,10 @@ if (window.location.pathname.includes("account.html")) {
       welcome.textContent = `Welcome, ${user.name}!`;
     }
   }
+}
+
+// Cerrar sesión desde account.html
+function logout() {
+  localStorage.removeItem("fidexaUser");
+  window.location.href = "index.html";
 }

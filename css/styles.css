@@ -232,3 +232,78 @@ button {
   background-color: var(--blanco);
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
 }
+
+
+/* Modal personalizado para entrada de datos */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: var(--blanco);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.4s ease-out;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-content p {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--azul-oscuro);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#modalAccept {
+  background-color: var(--verde-azulado);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#modalCancel {
+  background-color: var(--rojo);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#modalAccept:hover {
+  background-color: var(--celeste);
+}
+
+#modalCancel:hover {
+  background-color: #b71c1c;
+}
