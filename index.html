@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fidexa Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fidexa Bank offers secure, elegant, and innovative digital banking solutions.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <style>
+    .slider-imagenes.paused img {
+      animation-play-state: paused;
+    }
+
+    .boton-animacion {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .slider-imagenes {
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+    }
+  </style>
+</head>
+<body>
+  <header role="banner">
+    <div class="encabezado">
+      <div class="bloque-logo">
+        <img src="images/logo.png" alt="Fidexa Bank Logo" class="logo">
+      </div>
+
+      <div class="bloque-titulo">
+        <h1>Fidexa Bank</h1>
+        <p class="lead">“Your trust, our innovation.”</p>
+      </div>
+
+      <nav class="bloque-nav" role="navigation" aria-label="Main navigation">
+        <button onclick="window.location.href='index.html'" title="Home">🏠</button>
+        <button onclick="window.location.href='register.html'" title="Register">Register</button>
+        <button onclick="window.location.href='login.html'" title="Login">Login</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor" role="main">
+    <section aria-labelledby="welcome-heading">
+      <h2 id="welcome-heading">Welcome to Fidexa Bank</h2>
+      <p>Digital, elegant and secure banking for everyone.</p>
+    </section>
+
+    <section class="intro-con-imagen" aria-label="Bank introduction">
+      <div class="caja-texto">
+        <p>
+          At Fidexa Bank, we are committed to excellence, integrity, and innovation in every financial solution we provide.<br><br>
+          For decades, we have built enduring relationships based on trust and performance, offering our clients the security and confidence they deserve.<br><br>
+          Through cutting-edge technology and personalized service, we deliver banking experiences designed to meet the highest standards of efficiency and reliability.<br><br>
+          <strong>Fidexa Bank — Where trust meets innovation.</strong>
+        </p>
+      </div>
+
+      <div class="caja-imagen animada">
+        <div id="slider" class="slider-imagenes" role="img" aria-label="Rotating bank images">
+          <img src="images/bank_index.png" alt="Fidexa Bank - Main image">
+          <img src="images/bank2_index.png" alt="Fidexa Bank - Alternate view">
+          <img src="images/bank3_index.png" alt="Fidexa Bank - Modern branch">
+        </div>
+
+        <div class="boton-animacion" aria-label="Animation controls">
+          <button class="btn-principal" onclick="pausarAnimacion()" title="Pause image animation">Pause</button>
+          <button class="btn-principal" onclick="reanudarAnimacion()" title="Resume image animation">Resume</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="caja-botones" aria-label="User actions">
+      <button class="btn-principal" onclick="window.location.href='register.html'" title="Register for a new account">Register</button>
+      <button class="btn-principal" onclick="window.location.href='login.html'" title="Login to your account">Login</button>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <p>&copy; 2025 Fidexa Bank</p>
+  </footer>
+
+  <script>
+    function pausarAnimacion() {
+      document.getElementById("slider").classList.add("paused");
+    }
+
+    function reanudarAnimacion() {
+      document.getElementById("slider").classList.remove("paused");
+    }
+  </script>
+</body>
+</html>

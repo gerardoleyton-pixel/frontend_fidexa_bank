@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Account Dashboard - Fidexa Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your Fidexa Bank account, view your balance, and perform secure transactions.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+  <header role="banner">
+    <div class="encabezado">
+      <div class="bloque-logo">
+        <img src="images/logo.png" alt="Fidexa Bank Logo" class="logo">
+      </div>
+      <div class="bloque-titulo">
+        <h1>Fidexa Bank</h1>
+        <p class="lead">“Your trust, our innovation.”</p>
+      </div>
+      <nav class="bloque-nav" role="navigation" aria-label="Main navigation">
+        <button onclick="window.location.href='index.html'" title="Home">🏠</button>
+        <button onclick="logout()" title="Logout from your account">Logout</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor" role="main">
+    <section aria-labelledby="overview-heading">
+      <h2 id="overview-heading">Your Account Overview</h2>
+      <div class="mensaje" id="userWelcome">Welcome, valued user!</div>
+      <p>This section displays your balance and allows basic transactions.</p>
+      <div class="mensaje" id="accountMessage" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="caja-botones" aria-label="Transaction options">
+      <button class="btn-principal" onclick="createAccount()" title="Create a new account">Create Account</button>
+      <button class="btn-principal" onclick="deposit()" title="Deposit funds">Deposit</button>
+      <button class="btn-principal" onclick="withdraw()" title="Withdraw funds">Withdraw</button>
+      <button class="btn-principal" onclick="transfer()" title="Transfer funds">Transfer</button>
+      <button class="btn-principal" onclick="updateProfile()" title="Update your profile">Update Profile</button>
+    </section>
+
+    <section aria-labelledby="balance-heading">
+      <h3 id="balance-heading">Available Balance:</h3>
+      <div class="mensaje" id="balanceDisplay">$0.00</div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <p>&copy; 2025 Fidexa Bank</p>
+  </footer>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("fidexaUser"));
+    if (!user) {
+      alert("Session expired. Please log in again.");
+      window.location.href = "login.html";
+    }
+
+    const accountKey = `account_${user.email}`;
+    document.getElementById("userWelcome").textContent = `Welcome, ${user.name}!`;
+
+    function updateBalanceDisplay() {
+      const account = JSON.parse(localStorage.getItem(accountKey));
+      const balance = account?.balance ?? 0;
+      document.getElementById("balanceDisplay").textContent = `$${balance.toFixed(2)}`;
+    }
+
+    function logout() {
+      localStorage.removeItem("fidexaUser");
+      window.location.href = "index.html";
+    }
+
+    function createAccount() {
+      if (localStorage.getItem(accountKey)) {
+        showAccountMessage("Account already exists.", "info");
+        return;
+      }
+      const input = prompt("Enter initial deposit amount:");
+      const amount = parseFloat(input);
+      if (isNaN(amount) || amount <= 0) {
+        showAccountMessage("Invalid amount. Please enter a positive number.", "error");
+        return;
+      }
+      const account = { balance: amount };
+      localStorage.setItem(accountKey, JSON.stringify(account));
+      showAccountMessage(`Account created with $${amount.toFixed(2)}.`);
+      updateBalanceDisplay();
+    }
+
+    function deposit() {
+      const account = JSON.parse(localStorage.getItem(accountKey));
+      if (!account) {
+        showAccountMessage("Please create an account first.", "error");
+        return;
+      }
+      const input = prompt("Enter deposit amount:");
+      const amount = parseFloat(input);
+      if (isNaN(amount) || amount <= 0) {
+        showAccountMessage("Invalid amount.", "error");
+        return;
+      }
+      account.balance += amount;
+      localStorage.setItem(accountKey, JSON.stringify(account));
+      showAccountMessage(`Deposit of $${amount.toFixed(2)} successful.`);
+      updateBalanceDisplay();
+    }
+
+    function withdraw() {
+      const account = JSON.parse(localStorage.getItem(accountKey));
+      if (!account) {
+        showAccountMessage("Please create an account first.", "error");
+        return;
+      }
+      const input = prompt("Enter withdrawal amount:");
+      const amount = parseFloat(input);
+      if (isNaN(amount) || amount <= 0) {
+        showAccountMessage("Invalid amount.", "error");
+        return;
+      }
+      if (account.balance < amount) {
+        showAccountMessage("Insufficient funds.", "error");
+        return;
+      }
+      account.balance -= amount;
+      localStorage.setItem(accountKey, JSON.stringify(account));
+      showAccountMessage(`Withdrawal of $${amount.toFixed(2)} successful.`);
+      updateBalanceDisplay();
+    }
+
+    function transfer() {
+      const account = JSON.parse(localStorage.getItem(accountKey));
+      if (!account) {
+        showAccountMessage("Please create an account first.", "error");
+        return;
+      }
+
+      const email = prompt("Enter recipient's email:");
+      const amountInput = prompt("Enter transfer amount:");
+      const amount = parseFloat(amountInput);
+
+      if (!email || isNaN(amount) || amount <= 0) {
+        showAccountMessage("Invalid input.", "error");
+        return;
+      }
+
+      const recipientKey = `account_${email}`;
+      const recipientAccount = JSON.parse(localStorage.getItem(recipientKey));
+
+      if (!recipientAccount) {
+        showAccountMessage("Recipient account not found.", "error");
+        return;
+      }
+
+      if (account.balance < amount) {
+        showAccountMessage("Insufficient funds for transfer.", "error");
+        return;
+      }
+
+      account.balance -= amount;
+      recipientAccount.balance += amount;
+
+      localStorage.setItem(accountKey, JSON.stringify(account));
+      localStorage.setItem(recipientKey, JSON.stringify(recipientAccount));
+
+      showAccountMessage(`Transfer of $${amount.toFixed(2)} to ${email} successful.`);
+      updateBalanceDisplay();
+    }
+
+    function updateProfile() {
+      const userKey = "user_" + user.username;
+      const storedUser = JSON.parse(localStorage.getItem(userKey));
+
+      const newName = prompt("Enter your new full name:", storedUser.name);
+      const newEmail = prompt("Enter your new email:", storedUser.email);
+      const newPassword = prompt("Enter your new password:");
+
+      if (!newName || !newEmail || !newPassword) {
+        showAccountMessage("All fields are required to update profile.", "error");
+        return;
+      }
+
+      const updatedUser = {
+        username: storedUser.username,
+        name: newName,
+        email: newEmail,
+        password: newPassword
+      };
+
+      localStorage.setItem("user_" + storedUser.username, JSON.stringify(updatedUser));
+      localStorage.setItem("fidexaUser", JSON.stringify(updatedUser));
+
+      if (storedUser.email !== newEmail) {
+        const oldAccountKey = `account_${storedUser.email}`;
+        const newAccountKey = `account_${newEmail}`;
+        const accountData = JSON.parse(localStorage.getItem(oldAccountKey));
+        if (accountData) {
+          localStorage.setItem(newAccountKey, JSON.stringify(accountData));
+          localStorage.removeItem(oldAccountKey);
+        }
+      }
+
+      showAccountMessage("Profile updated successfully.");
+      location.reload();
+    }
+
+    function showAccountMessage(text, type = "info") {
+      const box = document.getElementById("accountMessage");
+      box.textContent = text;
+      box.style.color = type === "error" ? "#D32F2F" : "#00796B";
+      box.style.fontWeight = "500";
+      box.style.marginTop = "1rem";
+    }
+
+    updateBalanceDisplay();
+  </script>
+</body>
+</html>

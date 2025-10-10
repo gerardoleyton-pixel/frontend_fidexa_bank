@@ -1,0 +1,106 @@
+@media screen and (max-width: 768px) {
+  .encabezado {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .bloque-logo,
+  .bloque-titulo,
+  .bloque-nav {
+    flex: unset;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .bloque-nav {
+    justify-content: center;
+    padding-bottom: 0;
+  }
+
+  .contenedor {
+    padding: 0 1rem;
+  }
+
+  input {
+    max-width: 100%;
+    font-size: 1rem;
+  }
+
+  label {
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .btn-principal,
+  .btn-secundario {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .intro-con-imagen {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .caja-texto,
+  .caja-imagen {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+  }
+
+  .caja-imagen img {
+    max-width: 200px;
+    height: auto;
+  }
+
+  .slider-imagenes {
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .boton-animacion {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .caja-botones {
+    padding: 1rem;
+  }
+
+  .mensaje {
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .balanceDisplay,
+  #accountMessage {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  h2, h3 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .bloque-titulo h1 {
+    font-size: 2rem;
+  }
+}

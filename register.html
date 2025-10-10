@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Fidexa Bank</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your Fidexa Bank account and start managing your finances securely and elegantly.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+  <header role="banner">
+    <div class="encabezado">
+      <div class="bloque-logo">
+        <img src="images/logo.png" alt="Fidexa Bank Logo" class="logo">
+      </div>
+
+      <div class="bloque-titulo">
+        <h1>Fidexa Bank</h1>
+        <p class="lead">“Your trust, our innovation.”</p>
+      </div>
+
+      <nav class="bloque-nav" role="navigation" aria-label="Main navigation">
+        <button onclick="window.location.href='index.html'" title="Home">🏠</button>
+        <button onclick="window.location.href='login.html'" title="Login">Login</button>
+        <button onclick="window.location.href='register.html'" title="Register">Register</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor" role="main">
+    <section aria-labelledby="register-heading">
+      <h2 id="register-heading">Create Your Account</h2>
+
+      <form id="registerForm" role="form" aria-label="User registration form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required>
+
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn-principal">Register</button>
+          <button type="button" class="btn-secundario" onclick="window.location.href='login.html'">Back to Login</button>
+        </div>
+      </form>
+
+      <div id="registerMessage" class="mensaje" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <p>&copy; 2025 Fidexa Bank</p>
+  </footer>
+
+  <script>
+    function mostrarMensaje(id, texto, tipo = "info") {
+      const contenedor = document.getElementById(id);
+      contenedor.textContent = texto;
+      contenedor.style.color = tipo === "error" ? "#D32F2F" : "#00796B";
+    }
+
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!username || !name || !email || !password) {
+        mostrarMensaje("registerMessage", "Please complete all fields.", "error");
+        return;
+      }
+
+      const userKey = "user_" + username;
+      if (localStorage.getItem(userKey)) {
+        mostrarMensaje("registerMessage", "Username already exists. Choose another.", "error");
+        return;
+      }
+
+      const userData = { username, name, email, password };
+      localStorage.setItem(userKey, JSON.stringify(userData));
+      localStorage.setItem("fidexaUser", JSON.stringify(userData));
+
+      mostrarMensaje("registerMessage", "Registration successful! Redirecting...");
+      setTimeout(() => window.location.href = "account.html", 1500);
+    });
+  </script>
+</body>
+</html>
