@@ -1,34 +1,39 @@
 package com.example.dto.request;
 
+import com.example.exception.message.ErrorMessages;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * DTO para la creación de usuarios.
+ * Contiene validaciones para asegurar que los datos sean correctos y completos.
+ */
 public class UserCreateDTO {
 
-    @NotBlank(message = "El nombre de usuario es obligatorio")
-    @Size(min = 4, max = 20, message = "El nombre de usuario debe tener entre 4 y 20 caracteres")
+    @NotBlank(message = ErrorMessages.USERNAME_REQUIRED)
+    @Size(min = 4, max = 20, message = ErrorMessages.USERNAME_LENGTH)
     private String username;
 
-    @NotBlank(message = "El correo es obligatorio")
-    @Email(message = "El correo debe tener un formato válido")
+    @NotBlank(message = ErrorMessages.EMAIL_REQUIRED)
+    @Email(message = ErrorMessages.EMAIL_FORMAT)
     private String email;
 
-    @NotBlank(message = "El nombre completo es obligatorio")
-    @Size(min = 3, message = "El nombre completo debe tener al menos 3 caracteres")
+    @NotBlank(message = ErrorMessages.FULLNAME_REQUIRED)
+    @Size(min = 3, max = 50, message = ErrorMessages.FULLNAME_LENGTH)
     private String fullName;
 
-    @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @NotBlank(message = ErrorMessages.PASSWORD_REQUIRED)
+    @Size(min = 6, max = 100, message = ErrorMessages.PASSWORD_LENGTH)
     private String password;
 
-    // Getters y setters
+    // 🔹 Getters y setters
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username != null ? username.trim() : null;
     }
 
     public String getEmail() {
@@ -36,7 +41,7 @@ public class UserCreateDTO {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email != null ? email.trim() : null;
     }
 
     public String getFullName() {
@@ -44,7 +49,7 @@ public class UserCreateDTO {
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName = fullName != null ? fullName.trim() : null;
     }
 
     public String getPassword() {

@@ -1,64 +1,68 @@
 package com.example.exception;
 
+import com.example.exception.business.ResourceNotFoundException;
 import com.example.exception.business.DuplicateEntityException;
 import com.example.exception.business.InsufficientFundsException;
-import com.example.exception.business.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.example.exception.message.ErrorMessages.UNEXPECTED_ERROR;
+
+/**
+ * Manejador global de excepciones para toda la aplicación.
+ * Captura errores específicos y devuelve respuestas claras y estructuradas al cliente.
+ * Todas las respuestas se devuelven como objetos JSON con campo "error".
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Captura errores de validación en DTOs
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationErrors(MethodArgumentNotValidException ex, WebRequest request) {
-        Map<String, String> fieldErrors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                fieldErrors.put(error.getField(), error.getDefaultMessage())
-        );
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("errors", fieldErrors);
-        response.put("path", request.getDescription(false).replace("uri=", ""));
-
-        return ResponseEntity.badRequest().body(response);
-    }
-
-    // Recurso no encontrado
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex, WebRequest request) {
-        return buildErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND, request);
+    public ResponseEntity<Map<String, String>> handleNotFound(ResourceNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", ex.getMessage()));
     }
 
-    // Fondos insuficientes
-    @ExceptionHandler(InsufficientFundsException.class)
-    public ResponseEntity<Map<String, Object>> handleInsufficientFunds(InsufficientFundsException ex, WebRequest request) {
-        return buildErrorResponse(ex.getMessage(), HttpStatus.BAD_REQUEST, request);
-    }
-
-    // Duplicado
     @ExceptionHandler(DuplicateEntityException.class)
-    public ResponseEntity<Map<String, Object>> handleDuplicate(DuplicateEntityException ex, WebRequest request) {
-        return buildErrorResponse(ex.getMessage(), HttpStatus.CONFLICT, request);
+    public ResponseEntity<Map<String, String>> handleDuplicate(DuplicateEntityException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", ex.getMessage()));
     }
 
-    // Método auxiliar para construir respuesta
-    private ResponseEntity<Map<String, Object>> buildErrorResponse(String message, HttpStatus status, WebRequest request) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", status.value());
-        response.put("error", message);
-        response.put("path", request.getDescription(false).replace("uri=", ""));
-        return ResponseEntity.status(status).body(response);
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<Map<String, String>> handleInsufficientFunds(InsufficientFundsException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("error", "Error de validación en los campos.");
+
+        Map<String, String> details = new LinkedHashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                details.put(error.getField(), error.getDefaultMessage())
+        );
+        response.put("details", details);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of("error", ex.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGeneralException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", UNEXPECTED_ERROR));
     }
 }

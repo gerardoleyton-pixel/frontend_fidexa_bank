@@ -4,34 +4,56 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidad que representa a un usuario del sistema.
+ * Cada usuario puede tener múltiples cuentas bancarias asociadas.
+ */
 @Entity
 @Table(name = "users")
 public class User {
 
+    /**
+     * ID único del usuario (clave primaria).
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Nombre de usuario. Debe ser único y no nulo.
+     */
     @Column(nullable = false, unique = true)
     private String username;
 
+    /**
+     * Contraseña del usuario. No se debe exponer en respuestas.
+     */
     @Column(nullable = false)
     private String password;
 
+    /**
+     * Correo electrónico del usuario. Debe ser único y no nulo.
+     */
     @Column(nullable = false, unique = true)
     private String email;
 
+    /**
+     * Nombre completo del usuario.
+     */
     @Column
     private String fullName;
 
-    // Relación con cuentas bancarias
+    /**
+     * Lista de cuentas bancarias asociadas al usuario.
+     * Se eliminan automáticamente si el usuario es eliminado.
+     */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BankAccount> accounts = new ArrayList<>();
 
-    // Constructor vacío (obligatorio para JPA)
+    // 🔹 Constructor vacío (obligatorio para JPA)
     public User() {}
 
-    // Constructor con parámetros
+    // 🔹 Constructor con parámetros
     public User(String username, String password, String email, String fullName) {
         this.username = username;
         this.password = password;
@@ -39,13 +61,12 @@ public class User {
         this.fullName = fullName;
     }
 
-    // Getters y setters
+    // 🔹 Getters y setters
     public Long getId() {
         return id;
     }
 
-    // ✅ Agregado para pruebas unitarias
-    public void setId(Long id) {
+    public void setId(Long id) { // útil para pruebas unitarias
         this.id = id;
     }
 

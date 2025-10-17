@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,7 +35,6 @@ class BankAccountServiceImplTest {
     @InjectMocks
     private BankAccountServiceImpl bankAccountService;
 
-    // Caso exitoso: obtener cuenta por ID
     @Test
     void shouldReturnAccountDTOWhenIdExists() {
         BankAccount account = new BankAccount();
@@ -50,7 +50,6 @@ class BankAccountServiceImplTest {
         verify(bankAccountMapper).toDTO(account);
     }
 
-    // Caso fallido: cuenta no existe
     @Test
     void shouldThrowExceptionWhenAccountIdNotFound() {
         when(bankAccountRepository.findById(99L)).thenReturn(Optional.empty());
@@ -59,7 +58,6 @@ class BankAccountServiceImplTest {
         verify(bankAccountRepository).findById(99L);
     }
 
-    //Caso exitoso: crear cuenta cuando el usuario existe
     @Test
     void shouldCreateAccountWhenUserExists() {
         BankAccountCreateDTO dto = new BankAccountCreateDTO();
@@ -82,7 +80,6 @@ class BankAccountServiceImplTest {
         verify(bankAccountMapper).toDTO(account);
     }
 
-    // Caso fallido: usuario no existe
     @Test
     void shouldThrowExceptionWhenUserNotFoundForAccountCreation() {
         BankAccountCreateDTO dto = new BankAccountCreateDTO();
@@ -92,5 +89,68 @@ class BankAccountServiceImplTest {
 
         assertThrows(ResourceNotFoundException.class, () -> bankAccountService.createAccount(dto));
         verify(userRepository).findById(99L);
+    }
+
+    @Test
+    void shouldDeleteAccountWhenExists() {
+        Long accountId = 1L;
+
+        when(bankAccountRepository.existsById(accountId)).thenReturn(true);
+
+        bankAccountService.deleteAccount(accountId);
+
+        verify(bankAccountRepository).existsById(accountId);
+        verify(bankAccountRepository).deleteById(accountId);
+    }
+
+    @Test
+    void shouldThrowExceptionWhenDeletingNonexistentAccount() {
+        Long accountId = 99L;
+
+        when(bankAccountRepository.existsById(accountId)).thenReturn(false);
+
+        assertThrows(ResourceNotFoundException.class, () -> bankAccountService.deleteAccount(accountId));
+        verify(bankAccountRepository).existsById(accountId);
+    }
+
+    @Test
+    void shouldReturnAccountsByUserId() {
+        Long userId = 1L;
+
+        User mockUser = new User();
+        mockUser.setId(userId);
+        mockUser.setFullName("Cliente Ejemplo");
+
+        BankAccount account = new BankAccount();
+        BankAccountDTO dto = new BankAccountDTO();
+
+        when(userRepository.existsById(userId)).thenReturn(true);
+        when(bankAccountRepository.findByUserId(userId)).thenReturn(List.of(account));
+        when(bankAccountMapper.toDTO(account)).thenReturn(dto);
+
+        List<BankAccountDTO> result = bankAccountService.getAccountsByUserId(userId);
+
+        assertEquals(1, result.size());
+        verify(userRepository).existsById(userId);
+        verify(bankAccountRepository).findByUserId(userId);
+        verify(bankAccountMapper).toDTO(account);
+    }
+
+    @Test
+    void shouldReturnEmptyListWhenUserHasNoAccounts() {
+        Long userId = 2L;
+
+        User mockUser = new User();
+        mockUser.setId(userId);
+        mockUser.setFullName("Cliente Ejemplo");
+
+        when(userRepository.existsById(userId)).thenReturn(true);
+        when(bankAccountRepository.findByUserId(userId)).thenReturn(List.of());
+
+        List<BankAccountDTO> result = bankAccountService.getAccountsByUserId(userId);
+
+        assertTrue(result.isEmpty());
+        verify(userRepository).existsById(userId);
+        verify(bankAccountRepository).findByUserId(userId);
     }
 }

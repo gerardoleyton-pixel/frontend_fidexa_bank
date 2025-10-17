@@ -1,0 +1,2 @@
+-- Add DESCRIPTION column as nullable to avoid migration problems
+ALTER TABLE TRANSACTIONS ADD COLUMN IF NOT EXISTS DESCRIPTION VARCHAR(255);

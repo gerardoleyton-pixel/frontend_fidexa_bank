@@ -1,10 +1,13 @@
 package com.example.exception.business;
 
 /**
- * Se lanza cuando se intenta crear un recurso que ya existe (por ejemplo, email o número de cuenta duplicado).
+ * Excepción lanzada cuando se intenta crear una entidad duplicada.
+ * Se utiliza para validar campos únicos como correo electrónico o número de cuenta.
  */
 public class DuplicateEntityException extends RuntimeException {
-    public DuplicateEntityException(String message) {
-        super(message);
+
+
+    public DuplicateEntityException(String entityName, String fieldName, String fieldValue) {
+        super(String.format("%s con %s '%s' ya existe.", entityName, fieldName, fieldValue));
     }
 }
