@@ -1,0 +1,32 @@
+<section class="contenedor">
+  <div class="caja-texto animated fadeIn" role="region" aria-label="Listado de clientes registrados">
+    <h2>Clientes Registrados</h2>
+
+    <% if (clientes && clientes.length > 0) { %>
+      <table class="tabla-clientes" role="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clientes.forEach(cliente => { %>
+            <tr>
+              <td><%= cliente.id %></td>
+              <td><%= cliente.nombre %></td>
+              <td><%= cliente.correo %></td>
+              <td>
+                <a href="/clientes/<%= cliente.id %>" class="btn-secundario">Ver</a>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <p>No hay clientes registrados.</p>
+    <% } %>
+  </div>
+</section>

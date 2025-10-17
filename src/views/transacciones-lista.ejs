@@ -1,0 +1,47 @@
+<section class="contenedor">
+  <div class="caja-texto animated fadeIn" role="region" aria-label="Listado de movimientos de cuenta">
+    <h2>Movimientos de la Cuenta <%= cuentaId %></h2>
+
+    <% if (flash && flash.type && flash.message) { %>
+      <div class="alert-<%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+
+    <% if (movimientos.length === 0) { %>
+      <p>No hay transacciones registradas.</p>
+    <% } else { %>
+      <table class="tabla-transacciones" role="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Monto</th>
+            <th scope="col">Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% movimientos.forEach(tx => { %>
+            <tr>
+              <td><%= tx.id %></td>
+              <td><%= tx.type %></td>
+              <td>$<%= tx.amount.toFixed(2) %></td>
+              <td><%= new Date(tx.timestamp).toLocaleString() %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <section class="acciones-transacciones" aria-label="Acciones disponibles para esta cuenta">
+      <h3>Operaciones</h3>
+      <ul>
+        <li><a href="/transacciones/cuenta/<%= cuentaId %>/deposito" class="btn-principal">Realizar depósito</a></li>
+        <li><a href="/transacciones/cuenta/<%= cuentaId %>/retiro" class="btn-principal">Realizar retiro</a></li>
+        <li><a href="/transacciones/cuenta/<%= cuentaId %>/transferencia" class="btn-principal">Realizar transferencia</a></li>
+      </ul>
+    </section>
+
+    <div class="form-buttons">
+      <a href="/cuentas/<%= cuentaId %>" class="btn-principal">← Volver a la cuenta</a>
+    </div>
+  </div>
+</section>

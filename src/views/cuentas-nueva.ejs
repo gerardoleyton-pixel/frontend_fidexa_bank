@@ -1,0 +1,43 @@
+<section class="contenedor">
+  <div class="caja-texto animated fadeIn" role="form" aria-label="Formulario de nueva cuenta bancaria">
+    <h2 class="form-title">Registrar Nueva Cuenta</h2>
+
+    <% if (typeof error !== 'undefined') { %>
+      <div class="alert-error"><%= error %></div>
+    <% } %>
+
+    <% if (typeof aviso !== 'undefined') { %>
+      <div class="alert-warning"><%= aviso %></div>
+    <% } %>
+
+    <form action="/cuentas/nueva" method="POST" class="form-content">
+      <div class="form-group">
+        <label for="titular">Titular:</label>
+        <input type="text" id="titular" name="titular" class="input-field" required autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <label for="numeroCuenta">Número de Cuenta:</label>
+        <input type="text" id="numeroCuenta" name="numeroCuenta" class="input-field" required>
+      </div>
+
+      <div class="form-group">
+        <label for="saldoInicial">Saldo Inicial:</label>
+        <input type="number" id="saldoInicial" name="saldoInicial" class="input-field" required>
+      </div>
+
+      <div class="form-group">
+        <label for="usuarioId">ID de Usuario:</label>
+        <input type="number" id="usuarioId" name="usuarioId" class="input-field" required>
+        <div id="feedback" class="feedback-message"></div>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-principal">Crear Cuenta</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="/js/cuentas-nueva.js"></script>

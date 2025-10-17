@@ -1,0 +1,80 @@
+<section class="contenedor">
+  <div class="caja-texto animated fadeIn" role="region" aria-label="Detalle de cuenta bancaria">
+    <h2>Detalle de Cuenta</h2>
+
+    <p><strong>ID de Cuenta:</strong> <%= cuenta.id %></p>
+    <p><strong>Titular:</strong> <%= cuenta.accountHolder %></p>
+    <p><strong>Número de Cuenta:</strong> <%= cuenta.accountNumber %></p>
+    <p><strong>Saldo:</strong> $<%= cuenta.balance.toFixed(2) %></p>
+
+    <p><strong>ID de Usuario:</strong>
+      <% if (cuenta.userId) { %>
+        <%= cuenta.userId %>
+      <% } else if (cuenta.user && cuenta.user.id) { %>
+        <%= cuenta.user.id %>
+      <% } else { %>
+        <em>No disponible</em>
+      <% } %>
+    </p>
+
+    <% if (cuenta.user && cuenta.user.name) { %>
+      <p><strong>Nombre de Usuario:</strong> <%= cuenta.user.name %></p>
+    <% } %>
+
+    <hr>
+  <h3>Actualizar Cuenta</h3>
+    <form action="/cuentas/<%= cuenta.id %>" method="POST" class="form-content" aria-label="Formulario de actualización de cuenta">
+      <div class="form-group">
+        <label for="accountHolder">Nuevo Titular:</label>
+        <input type="text" id="accountHolder" name="accountHolder" value="<%= cuenta.accountHolder %>" class="input-field" required>
+      </div>
+
+      <div class="form-group">
+        <label for="balance">Nuevo Saldo:</label>
+        <input type="number" id="balance" name="balance" step="0.01" value="<%= cuenta.balance %>" class="input-field" required>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn-principal">Actualizar</button>
+      </div>
+    </form>
+
+    <hr>
+    <section class="movimientos-cuenta">
+      <h3>Movimientos</h3>
+      <% if (typeof movimientos !== 'undefined' && movimientos && movimientos.length > 0) { %>
+        <table class="tabla-transacciones" role="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Monto</th>
+              <th scope="col">Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% movimientos.forEach(tx => { %>
+              <tr>
+                <td><%= tx.id %></td>
+                <td><%= tx.type %></td>
+                <td>$<%= tx.amount.toFixed(2) %></td>
+                <td><%= new Date(tx.timestamp).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No se encontraron movimientos para esta cuenta.</p>
+      <% } %>
+
+      <div class="form-buttons" style="margin-top:12px;">
+        <div class="btn-group">
+          <a href="/transacciones/cuenta/<%= cuenta.id %>/deposito" class="btn-principal">Depositar</a>
+          <a href="/transacciones/cuenta/<%= cuenta.id %>/retiro" class="btn-principal">Retirar</a>
+          <a href="/transacciones/cuenta/<%= cuenta.id %>/transferencia" class="btn-principal">Transferir</a>
+          <a href="/cuentas" class="btn-principal">← Volver al listado</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

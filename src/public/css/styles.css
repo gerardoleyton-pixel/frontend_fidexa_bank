@@ -1,0 +1,291 @@
+:root {
+  --azul-oscuro: #0A2540;
+  --celeste: #1E90FF;
+  --verde-azulado: #00BFA6;
+  --gris-claro: #F5F7FA;
+  --blanco: #FFFFFF;
+  --dorado: #FFC107;
+  --rojo: #D32F2F;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--gris-claro);
+  color: var(--azul-oscuro);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+}
+
+footer {
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  text-align: center;
+  padding: 1rem 2rem;
+}
+
+main {
+  padding: 2rem 0;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+.lead {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--dorado);
+}
+
+label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--azul-oscuro);
+}
+
+input {
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+button {
+  font-family: inherit;
+}
+
+.btn-principal {
+  background-color: var(--celeste);
+  color: var(--blanco);
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-principal:hover {
+  background-color: var(--verde-azulado);
+}
+
+.btn-secundario {
+  background-color: var(--gris-claro);
+  color: var(--azul-oscuro);
+  border: 1px solid var(--azul-oscuro);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-secundario:hover {
+  background-color: var(--dorado);
+  color: var(--blanco);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1rem;
+  flex-wrap: wrap; /* allow buttons to wrap on small screens */
+}
+
+/* Ensure primary buttons are inline and don't stretch; add consistent spacing */
+.btn-principal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  margin: 0; /* spacing managed by containers */
+}
+
+/* Helper group for sets of action buttons (used inside table cells) */
+.btn-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Tables: give buttons a little breathing room and allow wrapping */
+.tabla-cuentas td .btn-principal,
+.tabla-transacciones td .btn-principal,
+.tabla-cuentas td .btn-group a,
+.tabla-transacciones td .btn-group a {
+  margin: 0 6px 6px 0;
+}
+
+/* Action lists and transaction actions */
+.acciones-transacciones ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.acciones-transacciones li {
+  display: inline-block;
+}
+
+/* Small screens: slightly smaller buttons and full-width for long labels */
+@media (max-width: 520px) {
+  .btn-principal {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  .form-buttons {
+    justify-content: flex-start;
+  }
+}
+
+.caja-botones {
+  background-color: var(--blanco);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.contenedor {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.bloque-logo {
+  flex: 1;
+}
+
+.logo {
+  max-width: 230px;
+  height: auto;
+}
+
+.bloque-titulo {
+  flex: 2;
+  text-align: center;
+}
+
+.bloque-titulo h1 {
+  margin: 0;
+  font-size: 2.6rem;
+}
+
+.bloque-titulo .lead {
+  margin-top: 6px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--dorado);
+}
+
+.bloque-nav {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+.bloque-nav button {
+  background-color: var(--celeste);
+  color: var(--blanco);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.bloque-nav button:hover {
+  background-color: var(--verde-azulado);
+}
+
+.intro-con-imagen {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.caja-texto {
+  flex: 2;
+  background-color: var(--blanco);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+  min-width: 280px;
+}
+
+.caja-imagen {
+  flex: 1;
+  background-color: var(--blanco);
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.caja-imagen img {
+  max-width: 280px;
+  height: auto;
+  border-radius: 12px;
+}
+
+.slider-imagenes {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.slider-imagenes img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.boton-animacion {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mensaje {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: var(--blanco);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.05);
+}

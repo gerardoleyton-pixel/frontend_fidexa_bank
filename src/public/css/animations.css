@@ -1,0 +1,94 @@
+/* Animaciones para botones principales */
+.btn-principal {
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-principal:hover {
+  background-color: var(--verde-azulado);
+  transform: scale(1.05);
+}
+
+/* Animaciones para botones secundarios */
+.btn-secundario {
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-secundario:hover {
+  background-color: var(--azul-oscuro);
+  color: var(--blanco);
+  transform: scale(1.05);
+}
+
+/* Efecto de enfoque en campos de entrada */
+input:focus {
+  outline: none;
+  box-shadow: 0 0 6px var(--celeste);
+  transition: box-shadow 0.3s ease;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Aplicar fadeIn a secciones principales */
+main section,
+.caja-botones,
+.form-buttons {
+  animation: fadeIn 0.6s ease both;
+}
+
+/* Animación automática para rotación de imágenes en index */
+.slider-imagenes {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.slider-imagenes img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto; /* ✅ Corregido: antes era 100% */
+  object-fit: cover;
+  opacity: 0;
+  animation: fadeSlider 12s infinite;
+  animation-timing-function: ease-in-out;
+  border-radius: 12px; /* ✅ Añadido para estética */
+}
+
+/* Escalonar la aparición de cada imagen */
+.slider-imagenes img:nth-child(1) {
+  animation-delay: 0s;
+}
+.slider-imagenes img:nth-child(2) {
+  animation-delay: 4s;
+}
+.slider-imagenes img:nth-child(3) {
+  animation-delay: 8s;
+}
+
+/* Definición de la animación */
+@keyframes fadeSlider {
+  0%   { opacity: 0; }
+  5%   { opacity: 1; }
+  30%  { opacity: 1; }
+  35%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Estado pausado para control manual */
+.slider-imagenes.paused img {
+  animation-play-state: paused;
+}

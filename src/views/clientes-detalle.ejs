@@ -1,0 +1,20 @@
+<section class="contenedor">
+  <div class="caja-texto animated fadeIn" role="region" aria-label="Detalle del cliente">
+    <h2>Detalle del Cliente</h2>
+
+    <% if (cliente) { %>
+      <div class="detalle-cliente">
+        <p><strong>ID:</strong> <%= cliente.id %></p>
+        <p><strong>Nombre:</strong> <%= cliente.nombre %></p>
+        <p><strong>Correo:</strong> <%= cliente.correo %></p>
+        <p><strong>Fecha de registro:</strong> <%= cliente.fechaRegistro %></p>
+      </div>
+
+      <div class="form-buttons">
+        <a href="/clientes" class="btn-principal">Volver al listado</a>
+      </div>
+    <% } else { %>
+      <p>No se encontró información del cliente.</p>
+    <% } %>
+  </div>
+</section>

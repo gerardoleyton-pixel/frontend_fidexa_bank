@@ -1,0 +1,97 @@
+[2025-10-17T16:08:59.408Z] ReferenceError: C:\Users\user\Documents\frontend\fidexa-web\src\views\clientes-registro.ejs:12
+    10|       <div class="form-group">
+    11|         <label for="nombre">Nombre completo:</label>
+ >> 12|         <input type="text" id="nombre" name="nombre" class="input-field" required autocomplete="name" value="<%= form && form.nombre ? form.nombre : '' %>">
+    13|       </div>
+    14| 
+    15|       <div class="form-group">
+
+form is not defined
+    at eval ("C:\\Users\\user\\Documents\\frontend\\fidexa-web\\src\\views\\clientes-registro.ejs":21:26)
+    at clientes-registro (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\response.js:909:7)
+    at res.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express-ejs-layouts\lib\express-layouts.js:77:18)
+    at C:\Users\user\Documents\frontend\fidexa-web\src\routes\clientes.js:7:7
+[2025-10-17T16:08:59.550Z] ReferenceError: C:\Users\user\Documents\frontend\fidexa-web\src\views\login.ejs:12
+    10|       <div class="form-group">
+    11|         <label for="correo">Correo electrónico:</label>
+ >> 12|         <input type="email" id="correo" name="correo" class="input-field" required autocomplete="email" value="<%= form && form.correo ? form.correo : '' %>">
+    13|       </div>
+    14| 
+    15|       <div class="form-group">
+
+form is not defined
+    at eval ("C:\\Users\\user\\Documents\\frontend\\fidexa-web\\src\\views\\login.ejs":21:26)
+    at login (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\response.js:909:7)
+    at res.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express-ejs-layouts\lib\express-layouts.js:77:18)
+    at C:\Users\user\Documents\frontend\fidexa-web\src\routes\clientes.js:36:7
+[2025-10-17T16:57:24.071Z] ReferenceError: C:\Users\user\Documents\frontend\fidexa-web\src\views\layout.ejs:27
+    25|       <nav class="bloque-nav" role="navigation" aria-label="Navegación principal">
+    26|           <button onclick="window.location.href='/'" title="Inicio">🏠</button>
+ >> 27|           <% if (user) { %>
+    28|             <span class="nav-user">Hola, <%= user.fullName || user.username %></span>
+    29|             <button onclick="window.location.href='/clientes/logout'" title="Cerrar sesión">Cerrar sesión</button>
+    30|           <% } else { %>
+
+user is not defined
+    at eval ("C:\\Users\\user\\Documents\\frontend\\fidexa-web\\src\\views\\layout.ejs":12:8)
+    at layout (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:703:17)
+    at tryHandleCache (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:274:36)
+    at exports.renderFile [as engine] (C:\Users\user\Documents\frontend\fidexa-web\node_modules\ejs\lib\ejs.js:491:10)
+    at View.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\view.js:139:8)
+    at tryRender (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\application.js:627:10)
+    at Function.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\application.js:574:3)
+    at ServerResponse.render (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\response.js:909:7)
+    at C:\Users\user\Documents\frontend\fidexa-web\node_modules\express-ejs-layouts\lib\express-layouts.js:113:20
+    at renderTick (C:\Users\user\Documents\frontend\fidexa-web\node_modules\express\lib\view.js:154:23)
+[2025-10-17T18:05:28.188Z] AxiosError: Request failed with status code 500
+    at settle (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:2097:12)
+    at IncomingMessage.handleStreamEnd (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:3305:11)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at Axios.request (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:4483:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.withdraw (C:\Users\user\Documents\frontend\fidexa-web\src\services\api\transacciones.js:42:22)
+    at async C:\Users\user\Documents\frontend\fidexa-web\src\routes\transacciones.js:78:5
+[2025-10-17T18:06:25.341Z] AxiosError: Request failed with status code 500
+    at settle (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:2097:12)
+    at IncomingMessage.handleStreamEnd (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:3305:11)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at Axios.request (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:4483:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.deposit (C:\Users\user\Documents\frontend\fidexa-web\src\services\api\transacciones.js:36:22)
+    at async C:\Users\user\Documents\frontend\fidexa-web\src\routes\transacciones.js:43:5
+[2025-10-17T18:07:01.511Z] AxiosError: Request failed with status code 500
+    at settle (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:2097:12)
+    at IncomingMessage.handleStreamEnd (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:3305:11)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at Axios.request (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:4483:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.transfer (C:\Users\user\Documents\frontend\fidexa-web\src\services\api\transacciones.js:48:22)
+    at async C:\Users\user\Documents\frontend\fidexa-web\src\routes\transacciones.js:113:5
+[2025-10-17T18:28:51.350Z] AxiosError: Request failed with status code 500
+    at settle (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:2097:12)
+    at IncomingMessage.handleStreamEnd (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:3305:11)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at Axios.request (C:\Users\user\Documents\frontend\fidexa-web\node_modules\axios\dist\node\axios.cjs:4483:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async Object.listByAccount (C:\Users\user\Documents\frontend\fidexa-web\src\services\api\transacciones.js:18:22)
+    at async C:\Users\user\Documents\frontend\fidexa-web\src\routes\transacciones.js:8:25

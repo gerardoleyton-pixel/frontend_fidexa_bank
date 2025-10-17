@@ -1,0 +1,43 @@
+<section class="contenedor">
+  <div class="caja-texto animated fadeIn" role="region" aria-label="Listado de cuentas bancarias">
+    <h2>Listado de Cuentas Bancarias</h2>
+
+    <% if (cuentas.length === 0) { %>
+      <p>No hay cuentas registradas.</p>
+    <% } else { %>
+      <table class="tabla-cuentas" role="table">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Titular</th>
+            <th scope="col">Número</th>
+            <th scope="col">Saldo</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cuentas.forEach(cuenta => { %>
+            <tr>
+              <td><%= cuenta.id %></td>
+              <td><%= cuenta.accountHolder %></td>
+              <td><%= cuenta.accountNumber %></td>
+              <td>$<%= cuenta.balance.toFixed(2) %></td>
+              <td>
+                <div class="btn-group">
+                  <a href="/cuentas/<%= cuenta.id %>" class="btn-principal">Ver</a>
+                  <a href="/transacciones/cuenta/<%= cuenta.id %>/deposito" class="btn-principal">Depositar</a>
+                  <a href="/transacciones/cuenta/<%= cuenta.id %>/retiro" class="btn-principal">Retirar</a>
+                  <a href="/transacciones/cuenta/<%= cuenta.id %>/transferencia" class="btn-principal">Transferir</a>
+                </div>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+
+    <div class="form-buttons">
+      <a href="/cuentas/nueva" class="btn-principal">Registrar nueva cuenta</a>
+    </div>
+  </div>
+</section>
