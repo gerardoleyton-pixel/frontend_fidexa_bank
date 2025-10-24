@@ -1,8 +1,10 @@
 :root{
-  --bg: #f5f7fa;
-  --primary: #1E90FF;
-  --dark: #0A2540;
-  --accent: #00BFA6;
+  /* palette aligned with fidexa-web */
+  --bg: #F5F7FA; /* gris-claro */
+  --primary: #1E90FF; /* celeste */
+  --dark: #0A2540; /* azul-oscuro */
+  --accent: #00BFA6; /* verde-azulado */
+  --white: #FFFFFF;
 }
 
 *{box-sizing:border-box}
@@ -28,18 +30,60 @@ body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);
 .btn-ghost{background:transparent;color:var(--primary);border:1px solid rgba(30,144,255,0.15)}
 
 /* header refinements */
-.header{display:flex;justify-content:space-between;align-items:center;padding:12px 0}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 0;background:transparent;color:var(--dark)}
 .brand a{color:var(--dark);text-decoration:none}
-.header-nav{display:flex;gap:12px;align-items:center}
+.header-nav{display:flex;align-items:center;gap:12px;width:100%}
+.nav-left{display:flex;gap:12px;margin-left:auto;align-items:center}
+.nav-right{display:flex;gap:10px;align-items:center}
 .nav-link{color:var(--dark);text-decoration:none;padding:6px 8px;border-radius:8px}
-.nav-cta{background:var(--accent);color:white}
+.nav-cta{background:var(--primary);color:var(--white)}
 .nav-user{display:flex;gap:8px;align-items:center}
 .user-name{font-weight:600;color:var(--dark);margin-right:6px}
-.header-logo{height:56px;border-radius:8px}
+/* larger logo to match mockup and improve prominence */
+.header-logo{height:88px;border-radius:8px}
+
+.nav-button{background:none;border:none;color:var(--dark);cursor:pointer;padding:8px 12px;border-radius:6px;font-weight:600}
+.nav-button:hover{background:rgba(0,0,0,0.04)}
+.nav-cta{
+  background:var(--primary);
+  color:var(--white);
+  padding:8px 14px;
+  border-radius:10px;
+  font-weight:700;
+  box-shadow:0 2px 6px rgba(30,144,255,0.12);
+  transition:background .15s ease, transform .08s ease;
+}
+.nav-cta:hover{ background:#0f7be0; transform:translateY(-1px) }
+.nav-cta:focus, .nav-cta:active{ outline:none; box-shadow:0 0 0 3px rgba(30,144,255,0.12) }
+.home-button{background:none;border:none;padding:6px 8px;display:flex;align-items:center;justify-content:center}
+.home-icon{font-size:20px}
+.home-svg path{fill:var(--dark)}
+
+/* admin icon */
+.admin-icon{width:20px;height:20px}
+.admin-svg{width:20px;height:20px}
+
+.btn{background:var(--primary);color:white;border:none;padding:8px 12px;border-radius:10px;cursor:pointer;margin-right:8px;font-weight:700}
+.btn:disabled{opacity:0.6}
+
+/* modal tweaks */
+.alert{padding:10px;border-radius:8px;margin-bottom:12px}
+.alert.error{background:#ffe6e6;color:#8a1f1f}
+.alert.success{background:#e6fff7;color:#046a4b}
+
+.actions .btn{margin-right:0}
 
 .nav-button{background:none;border:none;color:var(--dark);cursor:pointer;padding:6px 10px;border-radius:6px}
 .nav-button:hover{background:rgba(0,0,0,0.04)}
-.nav-cta{background:#ff6b6b;color:#fff;padding:8px 12px;border-radius:8px}
+.nav-cta{
+  /* Unified with body .btn so Registro visually matches primary body buttons */
+  background:var(--primary);
+  color:var(--white);
+  padding:8px 14px;
+  border-radius:10px;
+  font-weight:700;
+  box-shadow:0 2px 6px rgba(30,144,255,0.12);
+}
 .home-button{background:none;border:none;padding:6px 8px;display:flex;align-items:center;justify-content:center}
 .home-icon{font-size:20px}
 

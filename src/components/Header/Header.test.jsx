@@ -4,12 +4,15 @@ import { test, expect } from 'vitest'
 import Header from './Header'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from '../Auth/AuthContext'
+import { ConfirmProvider } from '../Confirm/ConfirmContext'
 
 test('renders header', ()=>{
   render(
     <AuthProvider>
       <BrowserRouter>
-        <Header />
+        <ConfirmProvider>
+          <Header />
+        </ConfirmProvider>
       </BrowserRouter>
     </AuthProvider>
   )

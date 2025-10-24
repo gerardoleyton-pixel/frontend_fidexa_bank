@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function WelcomePage(){
   const images = [
@@ -17,6 +17,7 @@ export default function WelcomePage(){
     }, 3500)
     return ()=>{ mounted.current = false; clearInterval(t) }
   },[])
+  const nav = useNavigate()
 
   return (
     <main className="container">
@@ -25,8 +26,8 @@ export default function WelcomePage(){
           <h2 className="hero-title">Bienvenido a Fidexa Bank</h2>
           <p className="lead">Digital, elegante y seguro. Gestiona tus cuentas y transacciones con facilidad.</p>
           <div className="hero-actions">
-            <Link to="/register"><button className="btn btn-cta">Registrarse</button></Link>
-            <Link to="/login"><button className="btn btn-ghost">Ingresar</button></Link>
+            <button className="btn btn-cta" onClick={()=>nav('/register')}>Registrarse</button>
+            <button className="btn btn-ghost" onClick={()=>nav('/login')}>Ingresar</button>
           </div>
         </div>
 
@@ -52,3 +53,4 @@ export default function WelcomePage(){
     </main>
   )
 }
+

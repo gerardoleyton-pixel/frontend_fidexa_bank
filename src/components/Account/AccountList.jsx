@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import accountsService from '../../services/accounts'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthContext'
 import { useNotification } from '../Notification/NotificationContext'
 
@@ -9,6 +9,7 @@ export default function AccountList(){
   const [loading, setLoading] = useState(true)
   const { user } = useAuth()
   const { notify } = useNotification()
+  const nav = useNavigate()
 
   useEffect(()=>{
     let mounted = true
@@ -36,7 +37,7 @@ export default function AccountList(){
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
         <h2>Listado de cuentas</h2>
-        <Link to="/cuentas/nueva"><button className="btn">Registrar nueva cuenta</button></Link>
+        <button className="btn" onClick={()=>nav('/cuentas/nueva')}>Registrar nueva cuenta</button>
       </div>
 
       {accounts.length === 0 ? (
@@ -61,10 +62,10 @@ export default function AccountList(){
                 <td>${Number(c.balance).toFixed(2)}</td>
                 <td style={{padding:'8px'}}>
                   <div className="flex-wrap">
-                    <Link to={`/cuentas/${c.id}`}><button className="btn">Ver</button></Link>
-                    <Link to={`/transacciones/cuenta/${c.id}/deposito`}><button className="btn">Depositar</button></Link>
-                    <Link to={`/transacciones/cuenta/${c.id}/retiro`}><button className="btn">Retirar</button></Link>
-                    <Link to={`/transacciones/cuenta/${c.id}/transferencia`}><button className="btn">Transferir</button></Link>
+                    <button className="btn" onClick={()=>nav(`/cuentas/${c.id}`)}>Ver</button>
+                    <button className="btn" onClick={()=>nav(`/transacciones/cuenta/${c.id}/deposito`)}>Depositar</button>
+                    <button className="btn" onClick={()=>nav(`/transacciones/cuenta/${c.id}/retiro`)}>Retirar</button>
+                    <button className="btn" onClick={()=>nav(`/transacciones/cuenta/${c.id}/transferencia`)}>Transferir</button>
                   </div>
                 </td>
               </tr>
@@ -75,3 +76,4 @@ export default function AccountList(){
     </div>
   )
 }
+

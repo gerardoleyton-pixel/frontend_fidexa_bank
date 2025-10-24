@@ -47,8 +47,9 @@ export default function TransactionForm({ mode='deposit', accountId }){
             <input className="input" value={destino} onChange={e=>setDestino(e.target.value)} />
           </div>
         )}
-        <div style={{display:'flex',gap:8}}>
+        <div style={{display:'flex',gap:8,alignItems:'center'}}>
           <button className="btn" type="submit" disabled={submitting}>{submitting? 'Procesando...': 'Enviar'}</button>
+          <button type="button" className="nav-button" onClick={()=>nav(`/transacciones/cuenta/${accountId}`)}>Ver cuenta</button>
         </div>
       </form>
     </div>

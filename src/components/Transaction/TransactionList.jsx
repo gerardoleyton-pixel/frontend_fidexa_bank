@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import transactionsService from '../../services/transactions'
 import { useNotification } from '../Notification/NotificationContext'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function TransactionList({ accountId }){
   const [movimientos, setMovimientos] = useState([])
   const [loading, setLoading] = useState(true)
   const { notify } = useNotification()
+  const nav = useNavigate()
 
   useEffect(()=>{
     let mounted = true
@@ -27,9 +28,9 @@ export default function TransactionList({ accountId }){
 
   return (
     <div>
-      <h3>Movimientos</h3>
+      <h3 style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>Movimientos</h3>
       {movimientos.length === 0 ? (
-        <div className="form">No hay transacciones registradas.</div>
+    <div className="form">No hay transacciones registradas.</div>
       ) : (
         <table className="table">
           <thead>
@@ -53,10 +54,10 @@ export default function TransactionList({ accountId }){
         </table>
       )}
 
-      <div style={{marginTop:12}}>
-        <Link to={`/transacciones/cuenta/${accountId}/deposito`}><button className="btn">Depositar</button></Link>
-        <Link to={`/transacciones/cuenta/${accountId}/retiro`}><button className="btn">Retirar</button></Link>
-        <Link to={`/transacciones/cuenta/${accountId}/transferencia`}><button className="btn">Transferir</button></Link>
+      <div className="actions" style={{marginTop:12,display:'flex',gap:10}}>
+        <button className="btn" onClick={()=>nav(`/transacciones/cuenta/${accountId}/deposito`)}>Depositar</button>
+        <button className="btn" onClick={()=>nav(`/transacciones/cuenta/${accountId}/retiro`)}>Retirar</button>
+        <button className="btn" onClick={()=>nav(`/transacciones/cuenta/${accountId}/transferencia`)}>Transferir</button>
       </div>
     </div>
   )
