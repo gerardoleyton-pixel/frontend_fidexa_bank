@@ -53,6 +53,7 @@ export default function AccountForm(){
         </div>
         <div style={{display:'flex',gap:8}}>
           <button className="btn" type="submit" disabled={submitting}>{submitting? 'Creando...':'Crear Cuenta'}</button>
+          <button className="btn" type="button" onClick={()=> nav(-1)}>Volver</button>
         </div>
       </form>
     </div>

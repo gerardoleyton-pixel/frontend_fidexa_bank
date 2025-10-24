@@ -2,17 +2,27 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthContext'
 import { useConfirm } from '../Confirm/ConfirmContext'
+import api from '../../services/api'
+import { useNotification } from '../Notification/NotificationContext'
 
 export default function Header(){
-  const { user, logout } = useAuth()
+  const { user, logout, updateUser } = useAuth()
   const nav = useNavigate()
+  const notifCtx = useNotification()
+  const notify = notifCtx && notifCtx.notify ? notifCtx.notify : (()=>{})
+
+  // profile edit modal state
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [profileForm, setProfileForm] = useState({ fullName:'', username:'', email:'', password:'' })
+  const [profileLoading, setProfileLoading] = useState(false)
 
   function doLogout(){
     logout()
     nav('/')
   }
 
-  const { confirm } = useConfirm()
+  const confirmCtx = useConfirm()
+  const confirm = confirmCtx && confirmCtx.confirm ? confirmCtx.confirm : (msg)=> Promise.resolve(window.confirm(msg))
 
   const isAdmin = localStorage.getItem('fidexa_admin') === 'true'
 
@@ -29,11 +39,17 @@ export default function Header(){
           {user ? (
             <div className="nav-user">
               <span className="user-name">{user.fullName || user.username || user.email}</span>
+              <button className="btn" onClick={()=> { setProfileForm({ fullName: user.fullName||'', username: user.username||'', email: user.email||'', password: '' }); setProfileOpen(true) }}>Actualizar datos</button>
               <button className="btn" onClick={doLogout}>Salir</button>
             </div>
           ) : (
-            /* Make Ingresar use the same primary styling as Registro */
-            <button className="nav-button nav-cta" onClick={()=>nav('/login')}>Ingresar</button>
+            /* If admin flag is set but no user object, show a logout for admin */
+            (isAdmin ? (
+              <button className="nav-button nav-cta" onClick={()=>{ localStorage.removeItem('fidexa_admin'); nav('/'); }}>Cerrar sesión</button>
+            ) : (
+              /* Make Ingresar use the same primary styling as Registro */
+              <button className="nav-button nav-cta" onClick={()=>nav('/login')}>Ingresar</button>
+            ))
           )}
 
           </div>
@@ -47,6 +63,53 @@ export default function Header(){
             )}
           </div>
       </nav>
+
+      {/* Profile modal for user to edit own data */}
+      {profileOpen && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.4)',display:'flex',justifyContent:'center',alignItems:'center',zIndex:60}} data-testid="profile-modal">
+          <div style={{background:'#fff',padding:20,width:'90%',maxWidth:560,borderRadius:6}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <h3>Actualizar perfil</h3>
+              <div><button className="btn" onClick={()=> setProfileOpen(false)}>Cerrar</button></div>
+            </div>
+            {profileLoading && <div className="loading">Guardando...</div>}
+            <div style={{marginTop:8}}>
+              <div className="form-row"><label>Nombre completo</label>
+                <input className="input" value={profileForm.fullName} onChange={e=> setProfileForm(p=> ({...p, fullName: e.target.value}))} /></div>
+              <div className="form-row"><label>Usuario</label>
+                <input className="input" value={profileForm.username} onChange={e=> setProfileForm(p=> ({...p, username: e.target.value}))} /></div>
+              <div className="form-row"><label>Email</label>
+                <input className="input" value={profileForm.email} onChange={e=> setProfileForm(p=> ({...p, email: e.target.value}))} /></div>
+              <div className="form-row"><label>Contraseña (dejar vacío para no cambiar)</label>
+                <input className="input" type="password" value={profileForm.password} onChange={e=> setProfileForm(p=> ({...p, password: e.target.value}))} /></div>
+              <div style={{marginTop:8,display:'flex',gap:8,justifyContent:'flex-end'}}>
+                <button className="btn" onClick={async ()=>{
+                  if(!user) return notify('No hay usuario logueado','error')
+                  // validations
+                  if(!profileForm.username || profileForm.username.toString().trim()==='') { notify('Usuario es obligatorio','error'); return }
+                  const email = (profileForm.email||'').toString().trim()
+                  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                  if(!emailRe.test(email)) { notify('Email inválido','error'); return }
+                  if(profileForm.password && profileForm.password.length>0 && profileForm.password.length < 6){ notify('La contraseña debe tener al menos 6 caracteres','error'); return }
+                  setProfileLoading(true)
+                  try{
+                    const payload = { fullName: profileForm.fullName, username: profileForm.username, email: profileForm.email }
+                    if(profileForm.password) payload.password = profileForm.password
+                    const res = await api.put(`/users/${user.id}`, payload)
+                    // update context and localStorage
+                    const updated = res.data || { ...user, ...payload }
+                    updateUser(updated)
+                    notify('Perfil actualizado','success')
+                    setProfileOpen(false)
+                  }catch(e){ notify(e.message || 'Error al actualizar perfil','error') }
+                  finally{ setProfileLoading(false) }
+                }}>Guardar</button>
+                <button className="btn" onClick={()=> setProfileOpen(false)}>Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   )
 }

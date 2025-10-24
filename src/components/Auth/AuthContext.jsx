@@ -25,13 +25,18 @@ export function AuthProvider({ children }){
     }finally{setLoading(false)}
   }
 
+  function updateUser(updated){
+    setUser(updated)
+    try{ localStorage.setItem('fidexa_user', JSON.stringify(updated)) }catch(e){}
+  }
+
   function logout(){
     setUser(null)
     localStorage.removeItem('fidexa_user')
   }
 
   return (
-    <AuthContext.Provider value={{user, login, logout, loading}}>
+    <AuthContext.Provider value={{user, login, logout, loading, updateUser}}>
       {children}
     </AuthContext.Provider>
   )

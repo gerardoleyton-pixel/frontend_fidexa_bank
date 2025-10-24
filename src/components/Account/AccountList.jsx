@@ -37,7 +37,17 @@ export default function AccountList(){
     <div>
       <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
         <h2>Listado de cuentas</h2>
-        <button className="btn" onClick={()=>nav('/cuentas/nueva')}>Registrar nueva cuenta</button>
+        <div style={{display:'flex',gap:8}}>
+          <button className="btn" onClick={()=>nav('/cuentas/nueva')}>Registrar nueva cuenta</button>
+          {user && <button className="btn" data-testid="accounts-refresh-btn" onClick={async ()=>{
+            // refresh current user's accounts
+            try{
+              const data = accountsService.getByUser ? await accountsService.getByUser(user.id) : await accountsService.getAll()
+              setAccounts(data)
+              notify('Cuentas refrescadas','success')
+            }catch(e){ notify(e.message || 'Error al refrescar cuentas','error') }
+          }}>Refrescar cuentas</button>}
+        </div>
       </div>
 
       {accounts.length === 0 ? (
