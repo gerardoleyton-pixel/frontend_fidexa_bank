@@ -36,15 +36,16 @@ export default function Header(){
             <button className="nav-button nav-cta" onClick={()=>nav('/login')}>Ingresar</button>
           )}
 
-          {isAdmin && (
-            <AdminButton onClick={()=>nav('/admin')} />
-          )}
-        </div>
+          </div>
 
-        {/* right group: Home (casita) placed at the far right so it is not between Registro and Ingresar */}
-        <div className="nav-right">
-          <HomeButton user={user} confirm={confirm} logout={logout} nav={nav} />
-        </div>
+          {/* right group: Home (casita) placed at the far right so it is not between Registro and Ingresar */}
+          <div className="nav-right">
+            <HomeButton user={user} confirm={confirm} logout={logout} nav={nav} />
+            {isAdmin && (
+              /* crown must be to the right of the casita */
+              <AdminButton onClick={()=>nav('/admin')} />
+            )}
+          </div>
       </nav>
     </header>
   )
@@ -53,9 +54,14 @@ export default function Header(){
 function HomeButton({ user, confirm, logout, nav }){
   async function onClick(ev){
     ev.preventDefault()
-    if(user){
+    const isAdmin = localStorage.getItem('fidexa_admin') === 'true'
+    if(user || isAdmin){
       const ok = await confirm('Al pulsar la casita se cerrará la sesión. ¿Deseas continuar?', 'Cerrar sesión?')
-      if(ok){ logout(); nav('/') }
+      if(ok){
+        if(user) logout()
+        if(isAdmin) localStorage.removeItem('fidexa_admin')
+        nav('/')
+      }
     } else { nav('/') }
   }
   return (

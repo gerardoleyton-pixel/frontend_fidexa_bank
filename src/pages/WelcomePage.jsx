@@ -27,6 +27,8 @@ export default function WelcomePage(){
           <p className="lead">Digital, elegante y seguro. Gestiona tus cuentas y transacciones con facilidad.</p>
           <div className="hero-actions">
             <button className="btn btn-cta" onClick={()=>nav('/register')}>Registrarse</button>
+            {/* Admin button next to Registro, visually matching primary buttons */}
+            <button className="btn btn-cta" onClick={()=>nav('/admin/login')}>Admin</button>
             <button className="btn btn-ghost" onClick={()=>nav('/login')}>Ingresar</button>
           </div>
         </div>
